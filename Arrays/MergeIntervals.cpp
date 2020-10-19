@@ -1,51 +1,66 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-#define COL 2 
+// stack method for solving this
 
-void MergeIntervals(vector<vector<int>> vec){
-    sort(vec.begin(),vec.end());
-    vector<vector<int>> result;
-    for(int i = 0; i < vec.size(); i++){
-        for(int j = i; j < vec.size(); j++){
-            if( vec[i][1] > vec[j][0] ){
-                vector<int> temp;
-                temp.push_back(vec[i][0]);
-                temp.push_back(max(vec[i][1],vec[j][1]));
-                result.push_back(temp);
-            }
+class Intervals{
+public:
+    int start;
+    int end;
+
+    Intervals(int start,int end){
+        this->start = start;
+        this->end = end;
+    }
+};
+
+void MergeIntervals(int intervals[4][2],int size){
+
+    // time complexity of this algorithm is o(n) for n intervals and 
+    // space complexity of algorithm would be o(n) because we are using
+    // stack to store it
+
+    if( size <= 1 ){
+        cout<<-1<<endl;
+    }
+
+    
+
+    stack<Intervals> s;
+
+    Intervals I = Intervals(intervals[0][0],intervals[0][1]);
+    s.push(I);
+
+    for(int i = 1; i < size; i++){
+
+        Intervals top = s.top();
+        Intervals current = Intervals(intervals[i][0],intervals[i][1]);
+
+        if( top.end < current.start ){
+            Intervals temp = Intervals(intervals[i][0],intervals[i][1]);
+            s.push(temp);
+        }
+
+        else if( top.end > current.start ){
+            top.end = max(top.end , current.end);
         }
 
     }
 
-    for(int i = 0; i < result.size(); i++){
-            cout<<result[i][0]<<" "<<result[i][1]<<endl;
+     while (!s.empty())
+    {
+        Intervals t = s.top();
+        cout << "[" << t.start << "," << t.end << "] ";
+        s.pop();
     }
+
+
 }
 
 int main(){
-    
-    vector<vector<int> > vec; 
-    int ROW;
-    cin>>ROW;
-    for (int i = 0; i < ROW; i++) { 
-        vector<int> v1; 
-        for (int j = 0; j < COL-1; j++) { 
-            int i1,i2;
-            cin>>i1;
-            v1.push_back(i1);
-            cin>>i2;
-            v1.push_back(i2); 
-        } 
-        vec.push_back(v1); 
-    } 
 
-    MergeIntervals(vec); // passing vector of vector in function
-  
-    /*for (int i = 0; i < vec.size(); i++) { 
-        for (int j = 0; j < vec[i].size(); j++) 
-            cout << vec[i][j] << " "; 
-        cout << endl; 
-    } */
+    int intervals[4][2] = { {1,3}, {2,6}, {8,10}, {15,18}};
+    int size = sizeof(intervals)/sizeof(intervals[0]);
+    MergeIntervals(intervals,size);
     return 0;
 }
