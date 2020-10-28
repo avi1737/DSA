@@ -11,26 +11,27 @@ void printArray(int a[],int size){
 // Efficient Method
 void NextGreaterElement(int arr[],int size){
 	stack<int> s;
-	int result[size];
+	
 	s.push(arr[0]);
-	for(int i = 1; i < size; i++){
 
-		while( arr[i] > s.top() && !s.empty()){
-			int index = s.top();
-			result[index] = arr[i];
+	for(int i = 1; i < size; i++){
+		if( s.empty()){
+			s.push(arr[i]);
+			continue;
+		}
+
+		while( !s.empty() && arr[i] > s.top()){
+			cout<<s.top()<<"--->"<<arr[i]<<endl;
 			s.pop();
 		}
 
-		s.push(i);
+		s.push(arr[i]);
 	}
 
-	while(!s.empty()){
-		int index = s.top();
-		result[index] = -1;
+	while( !s.empty()){
+		cout<<s.top()<<"--->"<<-1<<endl;
 		s.pop();
 	}
-
-	printArray(result,size);
 }
 
 void NextGreaterElement(int arr[],int size){
