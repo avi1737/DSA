@@ -24,7 +24,10 @@ int main(){
 
 			case 2:
 			cout<<"Stack Size"<<endl;
-			cout<<s.size()<<endl;
+			if( s.size() %2 == 1){
+				int mid = s.size()/2;
+				cout<<
+			}
 			break;
 
 			case 3:exit(0);
